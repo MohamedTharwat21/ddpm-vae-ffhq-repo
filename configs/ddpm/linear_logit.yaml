@@ -1,0 +1,78 @@
+# CONFIG dict for pixel DDPM v1 (linear schedule +
+# logit-normal timestep sampling, no REPA, no EMA).
+# status: baseline pixel-space DDPM. Notable finding: logit-normal timestep
+# sampling started from a much lower loss than uniform sampling from epoch
+# 1 - see README.md's Pixel DDPM section.
+experiment:
+  name: ddpm_pixel_linear_logit
+  status: baseline
+  description: >
+    Pixel-space DDPM (no VAE, no latent space), linear beta schedule,
+    logit-normal timestep sampling, no REPA, no EMA. Historical baseline for
+    the pixel-DDPM family - see README.md's experiment timeline.
+
+data:
+  global_seed: 42
+  data_root: null
+  data_root_search: /kaggle/input
+  split_file: /kaggle/working/ffhq_split.json
+  split_seed: 1234
+  train_count: 60000
+  val_count: 10000
+  img_size: 64
+
+model:
+  type: ddpm
+  base_channels: 64
+  channel_mults: [1, 2, 2, 2]
+  num_res_blocks: 2
+  attention_resolutions: [16]
+  time_emb_dim: 256
+  num_heads: 4
+  dropout: 0.1
+
+diffusion:
+  timesteps: 1000
+  schedule: linear
+  beta_start: 0.0001
+  beta_end: 0.02
+  cosine_s: 0.008
+  clip_denoised: false        # historical: this run predates the x0-clipping fix
+  timestep_sampling: logit_normal
+  logit_normal_mean: 0.0
+  logit_normal_std: 1.0
+  sampler: ddpm
+  ddim_steps: 50
+  ddim_eta: 0.0
+
+ema:
+  enabled: false
+  decay: 0.9999
+
+repa:
+  enabled: false
+  weight: 0.5
+  pretrained: true
+
+training:
+  batch_size: 64
+  epochs: 100                 # target; the supplied training history covers epochs 1-70
+  lr: 0.0002
+  use_amp: true
+  num_workers: 2
+  persistent_workers: true
+  resume: true
+
+monitoring:
+  num_monitor_samples: 16
+  sample_every_n_epochs: 5
+  denoising_vis_every_n_epochs: 25
+  trajectory_snapshot_every: 50
+
+paths:
+  output_root: /kaggle/working/ddpm_experiments
+  experiment_name: ddpm_ffhq
+
+evaluation:
+  # source: supplied evaluation run (epoch 70 checkpoint, no EMA weights present)
+  num_samples: 2048

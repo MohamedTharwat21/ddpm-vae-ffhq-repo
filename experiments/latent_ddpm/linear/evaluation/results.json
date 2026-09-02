@@ -1,0 +1,43 @@
+{
+  "checkpoint": "checkpoint at epoch 62 (no ema_model key present in checkpoint; raw model weights evaluated)",
+  "checkpoint_config": {
+    "vae_checkpoint_path": "/kaggle/input/datasets/mohamedkaggler/another-vae-version2/checkpoint_last.pt",
+    "vae_epoch": 40,
+    "vae_img_size": 64,
+    "vae_latent_dim": 128,
+    "vae_base_channels": 32,
+    "vae_parameters": 2958659,
+    "latent_shape": "flat (128,) reshaped to (C=2, H=8, W=8)",
+    "base_channels": 64,
+    "channel_mults": [1, 2, 2, 2],
+    "attention_resolutions": [2],
+    "timesteps": 1000,
+    "beta_schedule": "linear",
+    "timestep_sampling": "uniform"
+  },
+  "model_parameters": 8950914,
+  "generation": {
+    "sampler": "ddpm",
+    "timesteps": 1000,
+    "generated_samples": 2048,
+    "fid": 132.6443,
+    "inception_score_mean": 1.5128,
+    "inception_score_std": 0.0401
+  },
+  "inference_timing": {
+    "device": "cuda (Tesla T4)",
+    "batch_size": 32,
+    "latent_shape": [2, 8, 8],
+    "ddim_steps": 50,
+    "warmup_runs": 1,
+    "measured_runs": 3,
+    "ddpm_seconds_per_batch": 15.036,
+    "ddpm_seconds_per_batch_std": 0.083,
+    "ddpm_seconds_per_image": 0.470,
+    "ddim_seconds_per_batch": 14.958,
+    "ddim_seconds_per_batch_std": 0.241,
+    "ddim_seconds_per_image": 0.467,
+    "note": "In latent space, DDPM (1000 steps) and DDIM (50 steps) take roughly the same wall-clock time per batch, unlike pixel space where DDIM is dramatically faster. Each latent-space denoising step is cheap relative to the fixed per-call overhead, so reducing step count from 1000 to 50 does not yield the ~20x speedup seen in pixel-space DDPM."
+  },
+  "notes": "FID/IS evaluation took ~9 minutes in latent space, versus ~2 hours for the equivalent pixel-space DDPM evaluation (see experiments/pixel_ddpm/cosine_ema_logit_v2_100/evaluation/results.json), because each denoising step operates on an 8x8 latent grid rather than a 64x64 pixel grid. This is documented as a training/inference cost observation, not a quality claim - see README.md's Latent DDPM section for the corresponding quality discussion (blurrier outputs than pixel-space DDPM, likely bottlenecked by the VAE's reconstruction quality)."
+}

@@ -1,0 +1,83 @@
+# cosine-schedule variant of the latent DDPM (LDM) run, as reported
+# by the user (config largely mirrors configs/ldm/linear.yaml with
+# schedule=cosine).
+# status: FAILED / historical. Hit the x0-clipping/reconstruction bug (see
+# reports/experiments/ldm.md and ffhq_repo/diffusion/scheduler.py's module
+# docstring) - samples were high-contrast/saturated. Stopped after ~15
+# epochs (~20 min); train MSE ~0.33, val MSE ~0.32. Kept in this repository
+# to document the development process, NOT as a usable checkpoint.
+experiment:
+  name: ldm_cosine
+  status: failed
+  description: >
+    Same latent-diffusion setup as ldm_linear, cosine beta schedule. Failed
+    due to the same missing-x0-clipping bug later diagnosed and fixed in
+    the pixel-space cosine+EMA DDPM work (ffhq_repo/diffusion/scheduler.py).
+    This config predates the fix; clip_denoised is left true here (the
+    module's default and the recommended setting for any future re-run of
+    this experiment) precisely so a re-run uses the fix rather than
+    reproducing the historical failure - the failure itself is documented
+    in reports/experiments/ldm.md and README.md, not reproduced by default.
+
+data:
+  global_seed: 42
+  data_root: null
+  data_root_search: /kaggle/input
+  split_file: /kaggle/working/ffhq_split.json
+  split_seed: 1234
+  train_count: 60000
+  val_count: 10000
+  img_size: 64
+
+model:
+  type: ldm
+  vae_checkpoint_path: null
+  base_channels: 64
+  channel_mults: [1, 2, 2, 2]
+  num_res_blocks: 2
+  attention_resolutions: [2]
+  time_emb_dim: 256
+  num_heads: 4
+  dropout: 0.1
+
+diffusion:
+  timesteps: 1000
+  schedule: cosine
+  beta_start: 0.0001
+  beta_end: 0.02
+  cosine_s: 0.008
+  clip_denoised: true          # recommended fix for a future re-run - see note above
+  timestep_sampling: uniform
+  logit_normal_mean: 0.0
+  logit_normal_std: 1.0
+  sampler: ddpm
+  ddim_steps: 50
+  ddim_eta: 0.0
+
+ema:
+  enabled: false
+  decay: 0.9999
+
+repa:
+  enabled: false
+  weight: 0.5
+  pretrained: true
+
+training:
+  batch_size: 64
+  epochs: 100                  # target; historical run was stopped at ~epoch 15
+  lr: 0.0002
+  use_amp: true
+  num_workers: 2
+  persistent_workers: true
+  resume: true
+
+monitoring:
+  num_monitor_samples: 16
+  sample_every_n_epochs: 5
+  denoising_vis_every_n_epochs: 25
+  trajectory_snapshot_every: 50
+
+paths:
+  output_root: /kaggle/working/ddpm_experiments
+  experiment_name: ddpm_ffhq_latent_cosine

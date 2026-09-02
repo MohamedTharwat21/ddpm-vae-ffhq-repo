@@ -1,0 +1,27 @@
+{
+  "checkpoint": "checkpoint_best.pt",
+  "reconstruction": {
+    "num_samples": 10000,
+    "mse": 0.010579,
+    "psnr_db": 19.756,
+    "ssim": 0.5592,
+    "lpips": 0.2608
+  },
+  "generation": {
+    "real_samples_for_fid": 10000,
+    "generated_samples": 2048,
+    "fid": 137.296,
+    "inception_score_mean": 1.742,
+    "inception_score_std": 0.040
+  },
+  "inference_timing": {
+    "device": "cuda",
+    "batch_size": 64,
+    "reconstruction_batch_ms": 7.09,
+    "reconstruction_images_per_sec": 9021.65,
+    "reconstruction_estimated_10000_images_sec": 1.11,
+    "generation_batch_ms": 3.57,
+    "generation_images_per_sec": 17907.68,
+    "generation_estimated_2048_images_sec": 0.11
+  }
+}

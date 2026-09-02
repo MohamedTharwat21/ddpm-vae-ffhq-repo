@@ -1,0 +1,23 @@
+{
+  "checkpoint": "latest_model.pt (epoch 100, EMA weights loaded for evaluation and sample generation)",
+  "checkpoint_config": {
+    "IMG_SIZE": 64,
+    "BASE_CHANNELS": 64,
+    "CHANNEL_MULTS": [1, 2, 2, 2],
+    "TIMESTEPS": 1000,
+    "BETA_SCHEDULE": "cosine",
+    "SAMPLER": "ddpm",
+    "USE_EMA": true,
+    "EMA_DECAY": 0.9999
+  },
+  "model_parameters": 8952067,
+  "generation": {
+    "sampler": "ddpm",
+    "timesteps": 1000,
+    "generated_samples": 2048,
+    "fid": 26.6316,
+    "inception_score_mean": 3.1714,
+    "inception_score_std": 0.2149,
+    "wall_clock_minutes": 120
+  }
+}

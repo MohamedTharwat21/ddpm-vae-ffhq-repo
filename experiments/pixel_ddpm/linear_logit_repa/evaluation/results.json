@@ -1,0 +1,16 @@
+{
+  "status": "stopped early - incomplete run",
+  "checkpoint": "no checkpoint filename recorded in source material",
+  "stopped_at_epoch": 16,
+  "reason_stopped": "Training was stopped after 16 epochs because REPA was producing bad qualitative results (per source note: 'i stopped it after 16 epochs as it was bad results because of repa'). A generated-image placeholder is expected to illustrate this.",
+  "final_losses": {
+    "epoch": 16,
+    "train_mse": 0.00978,
+    "val_mse": 0.00973,
+    "train_repa": 0.57
+  },
+  "generation": null,
+  "inference_timing": null,
+  "notes": "No per-epoch training history CSV, no FID/IS evaluation, and no timing benchmark were supplied for this experiment - only the final-epoch loss snapshot above. This is intentionally left incomplete rather than backfilled with estimates. REPA's intent (a lightweight auxiliary cosine-similarity loss against frozen ResNet-18 features, meant to encourage semantically meaningful intermediate U-Net representations - see src/ffhq_repo/training/repa.py) is documented in README.md's Pixel DDPM section alongside this actual (negative) qualitative outcome, per the explicit instruction not to assume REPA improved results.",
+  "image_placeholder": "reports/figures/ddpm/linear_logit_repa/generation_grid.png"
+}

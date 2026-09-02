@@ -1,0 +1,22 @@
+# status: PLACEHOLDER - no training history, checkpoint, or evaluation
+# numbers exist in this repository for this experiment. Every metric for it
+# in README.md is marked N/A. Do not treat epochs/batch_size/etc. below as
+# reported facts; they are the inherited defaults pending real data.
+extends: cosine_ema_logit_v2_100.yaml
+
+experiment:
+  name: ddpm_pixel_linear_ema_logit
+  status: placeholder
+  description: >
+    Pixel-space DDPM with EMA + logit-normal timestep sampling, LINEAR beta
+    schedule (as opposed to the cosine+EMA family). No training data was
+    supplied for this run at consolidation time - config derived from the
+    cosine+EMA config by switching the schedule; all results are N/A until
+    real artifacts/history are added under
+    experiments/pixel_ddpm/linear_ema_logit/.
+
+diffusion:
+  schedule: linear
+
+evaluation:
+  checkpoint_epoch: null

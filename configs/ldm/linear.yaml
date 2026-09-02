@@ -1,0 +1,87 @@
+# CONFIG dict for the latent DDPM (LDM) linear-schedule run.
+# status: DEFAULT LDM configuration. Diffuses the frozen VAE v2 latent space.
+# Faster than pixel-space DDPM (~1.5h for 62 epochs vs. many hours for
+# pixel DDPM) but generations were blurry - see README.md's LDM section for
+# the qualitative discussion (likely bottlenecked by the pretrained VAE's
+# representation quality, not the diffusion process itself).
+experiment:
+  name: ldm_linear
+  status: default
+  description: >
+    Latent-space DDPM trained on VAE v2's frozen latent representation,
+    linear beta schedule. ~1.5 hours / 62 epochs on a single Kaggle GPU -
+    much faster than pixel-space DDPM, at the cost of blurrier generations.
+
+data:
+  global_seed: 42
+  data_root: null
+  data_root_search: /kaggle/input
+  split_file: /kaggle/working/ffhq_split.json
+  split_seed: 1234
+  train_count: 60000
+  val_count: 10000
+  img_size: 64
+
+model:
+  type: ldm
+  vae_checkpoint_path: null   # null = auto-detect checkpoint_best.pt under data_root_search;
+                               # set explicitly to the VAE v2 checkpoint path
+  base_channels: 64
+  channel_mults: [1, 2, 2, 2]
+  num_res_blocks: 2
+  attention_resolutions: [2]   # NOTE: 2, not 16 - this U-Net operates on the
+                                # VAE's small latent grid (8x8 for VAE v2's
+                                # LATENT_DIM=128), not raw pixels; see
+                                # ffhq_repo.data.pretrained_vae.factor_latent_shape
+  time_emb_dim: 256
+  num_heads: 4
+  dropout: 0.1
+
+diffusion:
+  timesteps: 1000
+  schedule: linear
+  beta_start: 0.0001
+  beta_end: 0.02
+  cosine_s: 0.008              # unused when schedule=linear
+  clip_denoised: false         # historical: this run predates the x0-clipping
+                                # fix (see configs/ldm/cosine.yaml and
+                                # reports/experiments/ldm.md) - kept false to
+                                # reproduce the run as actually trained.
+  timestep_sampling: uniform
+  logit_normal_mean: 0.0
+  logit_normal_std: 1.0
+  sampler: ddpm
+  ddim_steps: 50
+  ddim_eta: 0.0
+
+ema:
+  enabled: false
+  decay: 0.9999
+
+repa:
+  enabled: false
+  weight: 0.5
+  pretrained: true
+
+training:
+  batch_size: 64
+  epochs: 100                  # target; actual run was stopped/checkpointed at epoch 62
+  lr: 0.0002
+  use_amp: true
+  num_workers: 2
+  persistent_workers: true
+  resume: true
+
+monitoring:
+  num_monitor_samples: 16
+  sample_every_n_epochs: 5
+  denoising_vis_every_n_epochs: 25
+  trajectory_snapshot_every: 50
+
+paths:
+  output_root: /kaggle/working/ddpm_experiments
+  experiment_name: ddpm_ffhq_latent
+
+evaluation:
+  # source: supplied evaluation run (epoch 62 checkpoint)
+  num_samples: 2048

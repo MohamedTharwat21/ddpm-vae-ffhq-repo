@@ -1,0 +1,23 @@
+# status: EXPERIMENTAL - stopped after 16 epochs due to poor results, see
+# reports/experiments/ddpm_pixel.md and README.md's Failed/Abandoned
+# Experiments section. Do not treat this as a validated REPA result either
+# way; it was not trained to completion.
+extends: linear_logit.yaml
+
+experiment:
+  name: ddpm_pixel_linear_logit_repa
+  status: experimental
+  description: >
+    Same as ddpm_pixel_linear_logit, with the REPA auxiliary alignment loss
+    enabled. Stopped after 16 epochs (train MSE 0.00978, val MSE 0.00973,
+    REPA loss 0.57) - REPA's effect on final quality was not established;
+    see the README for the actual reported observation rather than an
+    assumed improvement.
+
+repa:
+  enabled: true
+  weight: 0.5
+  pretrained: true
+
+training:
+  epochs: 16                  # this run was stopped here; not a target, the actual last epoch

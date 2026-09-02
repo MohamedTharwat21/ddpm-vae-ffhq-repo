@@ -1,0 +1,63 @@
+# CONFIG dict for VAE v2 (MSE reconstruction loss +
+# perceptual loss, base_channels=32).
+# status: BEST VAE - default VAE configuration for this repository, and the
+# checkpoint used as the pretrained encoder/decoder for the LDM experiments
+# (configs/ldm/linear.yaml, configs/ldm/cosine.yaml).
+experiment:
+  name: vae_v2
+  status: best
+  description: >
+    Best FFHQ VAE run: MSE reconstruction loss + a perceptual (VGG16
+    feature-space) term. Lower FID than v1/v3 and a smaller footprint than
+    v3 - selected as the default VAE and as the pretrained encoder for the
+    latent-diffusion (LDM) experiments. See README.md's Final Model
+    Selection section.
+
+data:
+  global_seed: 42
+  data_root: null
+  data_root_search: /kaggle/input
+  split_file: /kaggle/working/ffhq_split.json
+  split_seed: 1234
+  train_count: 60000
+  val_count: 10000
+  img_size: 64
+
+model:
+  type: vae
+  latent_dim: 128
+  base_channels: 32
+
+perceptual_loss:
+  enabled: true
+  weight: 0.1
+  vgg_model: vgg16
+  vgg_pretrained: true
+  vgg_layers: [3, 8, 15, 22]
+  # NOTE: the exact original perceptual-loss cell was not part of the
+  # material supplied for this consolidation; ffhq_repo.models.vae.VGGPerceptualLoss
+  # reconstructs it to this exact spec (model/layers/weight). See that
+  # module's docstring for the full explanation.
+
+training:
+  batch_size: 128
+  epochs: 40
+  lr: 0.0002
+  beta: 1.0
+  beta_warmup_epochs: 10
+  use_amp: true
+  num_workers: 2
+  resume: true
+
+monitoring:
+  num_generation_samples: 64
+  num_recon_samples: 8
+
+paths:
+  output_dir: /kaggle/working/outputs_ffhq_vae/v2
+
+evaluation:
+  # source: supplied evaluation run for VAE v2
+  reconstruction_samples: 10000
+  generation_samples: 2048
+  eval_batch_size: 64

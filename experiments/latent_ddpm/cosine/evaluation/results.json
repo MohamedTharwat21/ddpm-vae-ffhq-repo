@@ -1,0 +1,14 @@
+{
+  "status": "failed / historical - not evaluated",
+  "checkpoint": "no checkpoint filename recorded in source material",
+  "reason_not_evaluated": "Training was stopped at ~15 epochs (~20 minutes) after the x0-clipping / VAE-decode saturation bug (see ../logs/README.md) was observed. No FID/IS evaluation or inference-timing benchmark was run against this checkpoint.",
+  "final_losses": {
+    "epoch_approx": 15,
+    "train_mse_approx": 0.33,
+    "val_mse_approx": 0.32,
+    "note": "Latent-space MSE, not directly comparable to pixel-space DDPM loss values."
+  },
+  "generation": null,
+  "inference_timing": null,
+  "image_placeholder": "reports/figures/ldm/cosine/high_contrast_examples.png"
+}

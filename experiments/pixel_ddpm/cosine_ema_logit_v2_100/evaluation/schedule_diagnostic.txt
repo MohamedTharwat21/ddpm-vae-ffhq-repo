@@ -1,0 +1,21 @@
+======================================================================
+DIFFUSION SCHEDULE DIAGNOSTIC (cosine, TIMESTEPS=1000, COSINE_S=0.008)
+======================================================================
+beta_min: 0.000100  |  beta_max: 0.999900
+alpha_bar[0]:  0.999900  (should be close to 1 - almost no noise at t=0)
+alpha_bar[-1]: 0.000000  (should be close to 0 - almost pure noise at t=T-1)
+sqrt(alpha_bar)[0]: 0.999950 | sqrt(alpha_bar)[-1]: 0.000016
+sqrt(1-alpha_bar)[0]: 0.010001 | sqrt(1-alpha_bar)[-1]: 1.000000
+SNR[0]: 9997.34 | SNR[-1]: 0.000000
+
+NaNs found: 0 | negative betas: 0 | alpha_bar outside [0,1]: 0
+Sanity checks passed: schedule is monotonic, bounded in [0,1], and NaN-free.
+
+Old shortcut mean vs. new (unclipped) x0-reconstruction mean - max abs diff: 2.43e-05 (OK, matches within float32 precision)
+======================================================================
+
+This diagnostic ran before training started on the actual 100-epoch
+cosine+EMA run (see reports/experiments/ddpm_pixel.md for the full
+root-cause writeup of the x0-clipping fix this diagnostic validates).
+A placeholder plot is expected at:
+  reports/figures/ddpm/cosine_ema_v2_100/schedule_diagnostic.png

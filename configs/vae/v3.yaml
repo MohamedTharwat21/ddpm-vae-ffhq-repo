@@ -1,0 +1,55 @@
+# no perceptual loss, base_channels=64).
+# status: experimental - larger capacity than v1/v2, evaluated for
+# comparison; did not surpass v2 on FID. See README.md's VAE comparison table.
+experiment:
+  name: vae_v3
+  status: experimental
+  description: >
+    Same objective as v1 (MSE only, no perceptual loss) but with double the
+    base channel width (64 vs. 32) - tests whether capacity alone improves
+    on v1/v2.
+
+data:
+  global_seed: 42
+  data_root: null
+  data_root_search: /kaggle/input
+  split_file: /kaggle/working/ffhq_split.json
+  split_seed: 1234
+  train_count: 60000
+  val_count: 10000
+  img_size: 64
+
+model:
+  type: vae
+  latent_dim: 128
+  base_channels: 64
+
+perceptual_loss:
+  enabled: false
+  weight: 0.0
+  vgg_model: vgg16
+  vgg_pretrained: true
+  vgg_layers: [3, 8, 15, 22]
+
+training:
+  batch_size: 128
+  epochs: 40
+  lr: 0.0002
+  beta: 1.0
+  beta_warmup_epochs: 10
+  use_amp: true
+  num_workers: 2
+  resume: true
+
+monitoring:
+  num_generation_samples: 64
+  num_recon_samples: 8
+
+paths:
+  output_dir: /kaggle/working/outputs_ffhq_vae/v3
+
+evaluation:
+  # source: supplied evaluation run for VAE v3
+  reconstruction_samples: 10000
+  generation_samples: 2048
+  eval_batch_size: 64

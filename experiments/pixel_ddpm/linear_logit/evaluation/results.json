@@ -1,0 +1,22 @@
+{
+  "checkpoint": "latest_model.pt (epoch 70, no EMA weights present)",
+  "generation": {
+    "sampler": "ddpm",
+    "timesteps": 1000,
+    "generated_samples": 2048,
+    "fid": 42.3732,
+    "inception_score_mean": 3.1976,
+    "inception_score_std": 0.1772
+  },
+  "inference_timing": {
+    "device": "cuda (Tesla T4)",
+    "batch_size": 32,
+    "diffusion_steps": 1000,
+    "warmup_runs": 1,
+    "measured_runs": 3,
+    "ddpm_seconds_per_batch": 120.707,
+    "ddpm_seconds_per_batch_std": 0.063,
+    "ddpm_seconds_per_image": 3.772
+  },
+  "notes": "First evaluation run in this project to demonstrate logit-normal timestep sampling reaching a much lower training loss than uniform sampling from epoch 1 onward - see README.md's Pixel DDPM section."
+}

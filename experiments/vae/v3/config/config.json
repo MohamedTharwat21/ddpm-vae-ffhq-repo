@@ -1,0 +1,22 @@
+{
+  "GLOBAL_SEED": 42,
+  "DATA_ROOT": null,
+  "SPLIT_FILE": "/kaggle/working/ffhq_split.json",
+  "SPLIT_SEED": 1234,
+  "TRAIN_COUNT": 60000,
+  "VAL_COUNT": 10000,
+  "IMG_SIZE": 64,
+  "LATENT_DIM": 128,
+  "BASE_CHANNELS": 64,
+  "BATCH_SIZE": 128,
+  "EPOCHS": 40,
+  "LR": 0.0002,
+  "BETA": 1.0,
+  "BETA_WARMUP_EPOCHS": 10,
+  "USE_AMP": true,
+  "NUM_WORKERS": 2,
+  "RESUME": true,
+  "NUM_GENERATION_SAMPLES": 64,
+  "NUM_RECON_SAMPLES": 8,
+  "OUTPUT_DIR": "/kaggle/working/outputs_ffhq_vae"
+}

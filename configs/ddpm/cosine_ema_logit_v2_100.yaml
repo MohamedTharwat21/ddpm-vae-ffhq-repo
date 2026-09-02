@@ -1,0 +1,85 @@
+# CONFIG dict for the pixel DDPM cosine+EMA+logit-normal
+# run, 100-epoch checkpoint (latest_model.pt, epoch=100).
+# status: FINAL / BEST DDPM. This is the model used for the main VAE-vs-DDPM
+# comparison in README.md. Do not confuse with the 65-epoch checkpoint of
+# the same training lineage (configs/ddpm/cosine_ema_logit_v1_65.yaml) -
+# that is documented separately because its own DDIM evaluation happened to
+# score a better FID at 1024/2048 samples; see README.md's "Checkpoint
+# Selection" section for why the 100-epoch run is still the one selected as
+# final, not the 65-epoch checkpoint.
+experiment:
+  name: ddpm_pixel_cosine_ema_logit_v2_100
+  status: final
+  description: >
+    Pixel-space DDPM with the cosine-schedule stability fix (x0 clipping),
+    EMA, and logit-normal timestep sampling. 100 epochs. Selected as the
+    FINAL / BEST DDPM for this repository.
+
+data:
+  global_seed: 42
+  data_root: null
+  data_root_search: /kaggle/input
+  split_file: /kaggle/working/ffhq_split.json
+  split_seed: 1234
+  train_count: 60000
+  val_count: 10000
+  img_size: 64
+
+model:
+  type: ddpm
+  base_channels: 64
+  channel_mults: [1, 2, 2, 2]
+  num_res_blocks: 2
+  attention_resolutions: [16]
+  time_emb_dim: 256
+  num_heads: 4
+  dropout: 0.1
+
+diffusion:
+  timesteps: 1000
+  schedule: cosine
+  beta_start: 0.0001
+  beta_end: 0.02
+  cosine_s: 0.008
+  clip_denoised: true         # THE cosine-stability fix - see ffhq_repo/diffusion/scheduler.py
+  timestep_sampling: logit_normal
+  logit_normal_mean: 0.0
+  logit_normal_std: 1.0
+  sampler: ddpm                # "ddpm" or "ddim" - see README's DDPM vs DDIM comparison;
+                                # DDIM scored a *better* FID at both checkpoints while being
+                                # ~20x faster, so consider sampler: ddim for actual generation
+  ddim_steps: 50
+  ddim_eta: 0.0
+
+ema:
+  enabled: true
+  decay: 0.9999
+
+repa:
+  enabled: false
+  weight: 0.5
+  pretrained: true
+
+training:
+  batch_size: 32
+  epochs: 100
+  lr: 0.0002
+  use_amp: true
+  num_workers: 2
+  persistent_workers: true
+  resume: true
+
+monitoring:
+  num_monitor_samples: 16
+  sample_every_n_epochs: 5
+  denoising_vis_every_n_epochs: 25
+  trajectory_snapshot_every: 50
+
+paths:
+  output_root: /kaggle/working/ddpm_experiments
+  experiment_name: ddpm_ffhq_cosine_ema
+
+evaluation:
+  # source: supplied evaluation run at epoch 100, DDPM sampler, 2048 samples
+  num_samples: 2048
+  checkpoint_epoch: 100

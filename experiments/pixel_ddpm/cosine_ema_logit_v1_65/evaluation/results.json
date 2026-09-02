@@ -1,0 +1,67 @@
+{
+  "checkpoint": "best_model.pt (folder named 'final-model-cosine-ema-75-epochs' on Kaggle, but the checkpoint's internal 'Saved epoch' field reads 65 - this folder-name/actual-epoch mismatch is preserved as-is from the source material and not resolved; the checkpoint's internal epoch count is treated as authoritative)",
+  "checkpoint_config": {
+    "IMG_SIZE": 64,
+    "BASE_CHANNELS": 64,
+    "CHANNEL_MULTS": [1, 2, 2, 2],
+    "TIMESTEPS": 1000,
+    "BETA_SCHEDULE": "cosine",
+    "USE_EMA": true,
+    "EMA_DECAY": 0.9999
+  },
+  "model_parameters": 8952067,
+  "generation_runs": [
+    {
+      "run_label": "primary (2048 samples)",
+      "sampler": "ddpm",
+      "generated_samples": 2048,
+      "fid": 28.8501,
+      "inception_score_mean": 3.1975,
+      "inception_score_std": 0.1764
+    },
+    {
+      "run_label": "primary (2048 samples)",
+      "sampler": "ddim",
+      "ddim_steps": 50,
+      "ddim_eta": 0.0,
+      "generated_samples": 2048,
+      "fid": 21.1107,
+      "inception_score_mean": 3.1707,
+      "inception_score_std": 0.1768,
+      "note": "Best FID recorded anywhere in this project. Despite this, the 65-epoch checkpoint was NOT selected as the final model - see 'final_selection_note' below."
+    },
+    {
+      "run_label": "secondary (1024 samples, run A)",
+      "sampler": "unspecified - not recorded in source material",
+      "generated_samples": 1024,
+      "fid": 36.9893,
+      "inception_score_mean": 3.1194,
+      "inception_score_std": 0.2023,
+      "note": "Sampler used for this run was not recorded alongside the result in the source material. Transcribed as-is; do not assume DDPM or DDIM."
+    },
+    {
+      "run_label": "secondary (1024 samples, run B)",
+      "sampler": "unspecified - not recorded in source material",
+      "generated_samples": 1024,
+      "fid": 28.8394,
+      "inception_score_mean": 3.0804,
+      "inception_score_std": 0.1342,
+      "note": "Sampler used for this run was not recorded alongside the result in the source material. Transcribed as-is; do not assume DDPM or DDIM."
+    }
+  ],
+  "inference_timing": {
+    "device": "cuda (Tesla T4)",
+    "batch_size": 32,
+    "diffusion_steps": 1000,
+    "ddim_steps": 50,
+    "ddpm_seconds_per_batch": 114.950,
+    "ddpm_seconds_per_batch_std": 0.352,
+    "ddpm_seconds_per_image": 3.592,
+    "ddim_seconds_per_batch": 5.769,
+    "ddim_seconds_per_batch_std": 0.011,
+    "ddim_seconds_per_image": 0.180,
+    "speedup_ddim_vs_ddpm": "~19.9x",
+    "shared_with": "experiments/pixel_ddpm/cosine_ema_logit_v2_100 - this benchmark measures the DDPM U-Net architecture and sampler implementation shared by both the 65-epoch and 100-epoch checkpoints of this training lineage, not a property of one specific checkpoint's weights."
+  },
+  "final_selection_note": "This is NOT the final/selected DDPM checkpoint. Per the explicit final-model decision documented in README.md, the 100-epoch checkpoint (experiments/pixel_ddpm/cosine_ema_logit_v2_100) was selected as the project's best DDPM despite this 65-epoch checkpoint scoring a better DDIM FID (21.11 vs 26.63 at 2048 samples with the DDPM sampler; a DDIM-sampled comparison at 100 epochs was not separately supplied). See README.md's 'Checkpoint Selection' and 'Final Model Selection' sections for the full reasoning - this file documents the 65-epoch results faithfully without retroactively treating them as the project's final result."
+}

@@ -1,0 +1,24 @@
+# same training lineage as cosine_ema_logit_v2_100.yaml, evaluated
+# at the 65-epoch checkpoint (best_model.pt, epoch=65) instead of the
+# 100-epoch final checkpoint.
+# status: intermediate checkpoint of the FINAL DDPM family, kept for
+# comparison - NOT the selected final model. See README.md's Checkpoint
+# Selection section: this checkpoint's DDIM-sampled FID (21.11 @ 2048
+# samples) was actually the best FID measured anywhere in this project, but
+# the 100-epoch run is still documented as the final selection per the
+# user's explicit instruction not to substitute an earlier "best-by-val-loss"
+# checkpoint for the intended final training length.
+extends: cosine_ema_logit_v2_100.yaml
+
+experiment:
+  name: ddpm_pixel_cosine_ema_logit_v1_65
+  status: experimental
+  description: >
+    Cosine + EMA + logit-normal pixel DDPM, evaluated at the 65-epoch
+    checkpoint (val-loss-best, not the final 100-epoch checkpoint).
+
+training:
+  epochs: 65
+
+evaluation:
+  checkpoint_epoch: 65
