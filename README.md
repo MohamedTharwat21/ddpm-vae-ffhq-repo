@@ -616,8 +616,8 @@ Included in the experiment matrix and in every comparison table below as an expl
 |---|---|---|---|---|---|
 | cosine_ema_logit_v1_65 | 65 | DDPM | 2048 | 28.8501 | 3.1975 ± 0.1764 |
 | cosine_ema_logit_v1_65 | 65 | DDIM (50 steps) | 2048 | 21.1107 | 3.1707 ± 0.1768 |
-| cosine_ema_logit_v1_65 | 65 | unrecorded | 1024 | 36.9893 | 3.1194 ± 0.2023 |
-| cosine_ema_logit_v1_65 | 65 | unrecorded | 1024 | 28.8394 | 3.0804 ± 0.1342 |
+| cosine_ema_logit_v1_65 | 65 | DDPM | 1024 | 36.9893 | 3.1194 ± 0.2023 |
+| cosine_ema_logit_v1_65 | 65 | DDIM | 1024 | 28.8394 | 3.0804 ± 0.1342 |
 | cosine_ema_logit_v2_100 (**final**) | 100 | DDPM | 2048 | 26.6316 | 3.1714 ± 0.2149 |
 
 The last two 1024-sample rows for the 65-epoch checkpoint had their sampler omitted in
@@ -965,7 +965,7 @@ this README. The full breakdown:
 | DDPM cosine_ema_v1_65 | 2048 | 10,000 | DDPM | 28.8501 | 3.1975 ± 0.1764 |
 | DDPM cosine_ema_v1_65 | 2048 | 10,000 | DDIM | 21.1107 | 3.1707 ± 0.1768 |
 | DDPM cosine_ema_v1_65 | **1024** | 10,000 | DDPM | 36.9893 | 3.1194 ± 0.2023 |
-| DDPM cosine_ema_v1_65 | **1024** | 10,000 | DDPM | 28.8394 | 3.0804 ± 0.1342 |
+| DDPM cosine_ema_v1_65 | **1024** | 10,000 | DDIM | 28.8394 | 3.0804 ± 0.1342 |
 | **DDPM cosine_ema_v2_100 (final)** | 2048 | 10,000 | DDPM | **26.6316** | 3.1714 ± 0.2149 |
 
 ## Checkpoint Selection
